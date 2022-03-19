@@ -6,9 +6,8 @@ import ImageGallery from './components/ImageGallery';
 import Button from './components/Button';
 // import Loader from './components/Loader';
 import Modal from './components/Modal';
+import pixabayApi from './services/pixabayApi';
 import s from 'App.module.css';
-
-const apiKey = '23316117-157eac1742a52b03f27289157';
 
 class App extends Component {
   state = {
@@ -17,6 +16,9 @@ class App extends Component {
     showModal: false,
     largeImageURL: '',
     tags: '',
+    currentPage: 1,
+    isLoading: false,
+    error: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -24,13 +26,33 @@ class App extends Component {
     const nextName = this.state.imageName;
 
     if (prevName !== nextName) {
-      fetch(
-        `https://pixabay.com/api/?q=${nextName}&page=1&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=15`
-      )
-        .then(response => response.json())
-        .then(images => this.setState({ images: images.hits }));
+      this.fetchImages(this.setState({ nextName }));
     }
   }
+
+  fetchImages = () => {
+    const { currentPage, imageName } = this.state;
+    const options = { currentPage, imageName };
+
+    this.setState({ isLoading: true });
+
+    pixabayApi
+      .fetchImages(options)
+      .then(hits => {
+        this.setState(({ images, currentPage }) => ({
+          images: [...images, ...hits],
+          currentPage: currentPage + 1,
+        }));
+      })
+      .catch(error => this.setState({ error }))
+      .finally(() => {
+        this.setState({ isLoading: false });
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth',
+        });
+      });
+  };
 
   handleFormSubmit = imageName => {
     this.setState({ imageName });
