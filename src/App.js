@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from './components/Searchbar';
 import ImageGallery from './components/ImageGallery';
 import Button from './components/Button';
-// import Loader from './components/Loader';
+import Loader from './components/Loader';
 import Modal from './components/Modal';
 import pixabayApi from './services/pixabayApi';
 import s from 'App.module.css';
@@ -55,7 +55,12 @@ class App extends Component {
   };
 
   handleFormSubmit = imageName => {
-    this.setState({ imageName });
+    this.setState({
+      imageName: imageName,
+      currentPage: 1,
+      images: [],
+      error: null,
+    });
   };
 
   toggleModal = (largeImage, tags) => {
@@ -67,14 +72,14 @@ class App extends Component {
   };
 
   render() {
-    const { images, showModal, largeImageURL, tags } = this.state;
+    const { images, showModal, largeImageURL, tags, isLoading } = this.state;
 
     return (
       <div className={s.App}>
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery images={images} onClick={this.toggleModal} />
-        {images.length > 0 && <Button />}
-        {/* <Loader /> */}
+        {images.length > 0 && <Button onClick={this.fetchImages} />}
+        {isLoading && <Loader />}
         {showModal && (
           <Modal
             onClose={this.toggleModal}
@@ -82,7 +87,7 @@ class App extends Component {
             tags={tags}
           />
         )}
-        <ToastContainer autoClose={3000} />
+        <ToastContainer autoClose={3000} position="top-right" type="default" />
       </div>
     );
   }

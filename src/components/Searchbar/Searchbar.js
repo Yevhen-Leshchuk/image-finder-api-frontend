@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import s from './Searchbar.module.css';
 
 class Searchbar extends Component {
@@ -15,7 +16,7 @@ class Searchbar extends Component {
     event.preventDefault();
 
     if (this.state.imageName.trim() === '') {
-      toast.error('Enter a image name!');
+      toast.error('Enter correct value!');
       return;
     }
 
