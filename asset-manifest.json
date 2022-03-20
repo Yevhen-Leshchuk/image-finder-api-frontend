@@ -1,13 +1,14 @@
 {
   "files": {
-    "main.css": "/image-finder-api-frontend/static/css/main.d8ad7989.css",
+    "main.css": "/image-finder-api-frontend/static/css/main.f24d9ba8.css",
     "main.js": "/image-finder-api-frontend/static/js/main.40c69d31.js",
     "index.html": "/image-finder-api-frontend/index.html",
-    "main.d8ad7989.css.map": "/image-finder-api-frontend/static/css/main.d8ad7989.css.map",
+    "static/media/search.svg": "/image-finder-api-frontend/static/media/search.6ac6b6bcaab3e1f14023.svg",
+    "main.f24d9ba8.css.map": "/image-finder-api-frontend/static/css/main.f24d9ba8.css.map",
     "main.40c69d31.js.map": "/image-finder-api-frontend/static/js/main.40c69d31.js.map"
   },
   "entrypoints": [
-    "static/css/main.d8ad7989.css",
+    "static/css/main.f24d9ba8.css",
     "static/js/main.40c69d31.js"
   ]
 }
