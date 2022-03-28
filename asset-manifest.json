@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/image-finder-api-frontend/static/css/main.f24d9ba8.css",
-    "main.js": "/image-finder-api-frontend/static/js/main.40c69d31.js",
-    "index.html": "/image-finder-api-frontend/index.html",
-    "static/media/search.svg": "/image-finder-api-frontend/static/media/search.6ac6b6bcaab3e1f14023.svg",
-    "main.f24d9ba8.css.map": "/image-finder-api-frontend/static/css/main.f24d9ba8.css.map",
-    "main.40c69d31.js.map": "/image-finder-api-frontend/static/js/main.40c69d31.js.map"
+    "main.css": "/react-image-finder/static/css/main.88f3c7cc.css",
+    "main.js": "/react-image-finder/static/js/main.bf2c5bed.js",
+    "index.html": "/react-image-finder/index.html",
+    "static/media/search.svg": "/react-image-finder/static/media/search.6ac6b6bcaab3e1f14023.svg",
+    "main.88f3c7cc.css.map": "/react-image-finder/static/css/main.88f3c7cc.css.map",
+    "main.bf2c5bed.js.map": "/react-image-finder/static/js/main.bf2c5bed.js.map"
   },
   "entrypoints": [
-    "static/css/main.f24d9ba8.css",
-    "static/js/main.40c69d31.js"
+    "static/css/main.88f3c7cc.css",
+    "static/js/main.bf2c5bed.js"
   ]
 }
