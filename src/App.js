@@ -43,7 +43,7 @@ function App() {
         });
     };
     fetchImages();
-  }, [imageName, currentPage]);
+  }, [imageName, currentPage, error]);
 
   const updatePage = () => {
     setCurrentPage(prevPage => prevPage + 1);
