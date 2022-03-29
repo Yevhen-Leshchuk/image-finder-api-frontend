@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from './components/Searchbar';
@@ -9,88 +9,75 @@ import Modal from './components/Modal';
 import pixabayApi from './services/pixabayApi';
 import s from 'App.module.css';
 
-class App extends Component {
-  state = {
-    imageName: '',
-    images: [],
-    showModal: false,
-    largeImageURL: '',
-    tags: '',
-    currentPage: 1,
-    isLoading: false,
-    error: null,
-  };
+function App() {
+  const [imageName, setImageName] = useState('');
+  const [images, setImages] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [largeImageURL, setLargeImageURL] = useState('');
+  const [tags, setTags] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevName = prevState.imageName;
-    const nextName = this.state.imageName;
-
-    if (prevName !== nextName) {
-      this.fetchImages(this.setState({ nextName }));
-    }
-  }
-
-  fetchImages = () => {
-    const { currentPage, imageName } = this.state;
+  useEffect(() => {
     const options = { currentPage, imageName };
 
-    this.setState({ isLoading: true });
+    if (!imageName) {
+      return;
+    }
+    const fetchImages = () => {
+      setIsLoading(true);
 
-    pixabayApi
-      .fetchImages(options)
-      .then(hits => {
-        this.setState(({ images, currentPage }) => ({
-          images: [...images, ...hits],
-          currentPage: currentPage + 1,
-        }));
-      })
-      .catch(error => this.setState({ error }))
-      .finally(() => {
-        this.setState({ isLoading: false });
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth',
+      pixabayApi
+        .fetchImages(options)
+        .then(hits => {
+          setImages(prevImages => [...prevImages, ...hits]);
+        })
+        .catch(error => setError(error))
+        .finally(() => {
+          setIsLoading(false);
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+          });
         });
-      });
+    };
+    fetchImages();
+  }, [imageName, currentPage]);
+
+  const updatePage = () => {
+    setCurrentPage(prevPage => prevPage + 1);
   };
 
-  handleFormSubmit = imageName => {
-    this.setState({
-      imageName: imageName,
-      currentPage: 1,
-      images: [],
-      error: null,
-    });
+  const handleFormSubmit = imageName => {
+    setImageName(imageName);
+    setCurrentPage(1);
+    setImages([]);
+    setError(null);
   };
 
-  toggleModal = (largeImage, tags) => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-      largeImageURL: largeImage,
-      tags: tags,
-    }));
+  const toggleModal = (largeImage, tags) => {
+    setShowModal(!showModal);
+    setLargeImageURL(largeImage);
+    setTags(tags);
   };
 
-  render() {
-    const { images, showModal, largeImageURL, tags, isLoading } = this.state;
-
-    return (
-      <div className={s.App}>
-        <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={images} onClick={this.toggleModal} />
-        {images.length > 0 && <Button onClick={this.fetchImages} />}
-        {isLoading && <Loader />}
-        {showModal && (
-          <Modal
-            onClose={this.toggleModal}
-            largeImageURL={largeImageURL}
-            tags={tags}
-          />
-        )}
-        <ToastContainer autoClose={3000} position="top-right" type="default" />
-      </div>
-    );
-  }
+  return (
+    <div className={s.App}>
+      <Searchbar onSubmit={handleFormSubmit} />
+      <ImageGallery images={images} onClick={toggleModal} />
+      {images.length > 0 && <Button onClick={updatePage} />}
+      {isLoading && <Loader />}
+      {showModal && (
+        <Modal
+          onClose={toggleModal}
+          largeImageURL={largeImageURL}
+          tags={tags}
+        />
+      )}
+      <ToastContainer autoClose={3000} position="top-right" type="default" />
+    </div>
+  );
 }
 
 export default App;
