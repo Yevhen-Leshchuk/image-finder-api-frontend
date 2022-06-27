@@ -6,9 +6,11 @@ const modalRoot = document.querySelector('#modal-root');
 
 function Modal({ onClose, largeImageURL, tags }) {
   useEffect(() => {
+    window.document.body.style.overflowY = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      window.document.body.style.overflowY = 'visible';
     };
   });
 
